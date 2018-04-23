@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A5B4DA4208CE30100F2EAE2 /* XMLWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5B4DA3208CE30100F2EAE2 /* XMLWriter.swift */; };
 		5AA705EB207D32A700A8EEFD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA705EA207D32A700A8EEFD /* main.swift */; };
 		5AA705F4207D334D00A8EEFD /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA705F3207D334D00A8EEFD /* Console.swift */; };
 		5AA705F7207D345F00A8EEFD /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA705F6207D345F00A8EEFD /* StringExtension.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A5B4DA3208CE30100F2EAE2 /* XMLWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLWriter.swift; sourceTree = "<group>"; };
 		5AA705E7207D32A700A8EEFD /* JackAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JackAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA705EA207D32A700A8EEFD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5AA705F3207D334D00A8EEFD /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				5AA705EA207D32A700A8EEFD /* main.swift */,
 				5AA705FC207D37A500A8EEFD /* JackTokenizer.swift */,
 				5AA705FE207D37B600A8EEFD /* CompilationEngine.swift */,
+				5A5B4DA3208CE30100F2EAE2 /* XMLWriter.swift */,
 				5AA705F3207D334D00A8EEFD /* Console.swift */,
 				5AA705F5207D343A00A8EEFD /* Extensions */,
 			);
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A5B4DA4208CE30100F2EAE2 /* XMLWriter.swift in Sources */,
 				5AA705FD207D37A500A8EEFD /* JackTokenizer.swift in Sources */,
 				5AA705FB207D348900A8EEFD /* FileManagerExtension.swift in Sources */,
 				5AA705FF207D37B600A8EEFD /* CompilationEngine.swift in Sources */,
