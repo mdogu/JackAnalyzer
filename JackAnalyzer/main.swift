@@ -71,6 +71,7 @@ do {
                 xmlWriter.write(token: token)
             }
         }
+        xmlWriter.closeFile()
     }
 } catch {
     Console.error(error.localizedDescription)

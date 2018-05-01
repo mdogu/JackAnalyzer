@@ -34,11 +34,11 @@ class XMLWriter {
             let acceptableSymbol: String
             switch symbol {
             case .greaterThan:
-                acceptableSymbol = "&gt"
+                acceptableSymbol = "&gt;"
             case .lessThan:
-                acceptableSymbol = "&lt"
+                acceptableSymbol = "&lt;"
             case .ampersand:
-                acceptableSymbol = "&amp"
+                acceptableSymbol = "&amp;"
             default:
                 acceptableSymbol = symbol.rawValue
             }

@@ -27,45 +27,58 @@ class JackTokenizer {
             if let line = inputFile.readLine() {
                 var commentLess = line
                 if isInComment {
-                    if let range = line.range(of: "*/") {
+                    if let range = commentLess.range(of: "*/") {
                         commentLess.removeSubrange(..<range.upperBound)
                         isInComment = false
                     } else {
                         return nextToken()
                     }
                 }
-                if let range = line.range(of: "//") {
+                if let range = commentLess.range(of: "//") {
                     commentLess.removeSubrange(range.lowerBound...)
                 }
-                if let openingRange = line.range(of: "/*") {
-                    let comment = line[openingRange.lowerBound...]
-                    if let closingRange = comment.range(of: "*/") {
+                if let openingRange = commentLess.range(of: "/*") {
+                    if let closingRange = commentLess.range(of: "*/") {
                         commentLess.removeSubrange(openingRange.lowerBound ..< closingRange.upperBound)
                     } else {
                         commentLess.removeSubrange(openingRange.lowerBound...)
                         isInComment = true
                     }
                 }
-                if let openingRange = line.range(of: "/**") {
-                    let comment = line[openingRange.lowerBound...]
-                    if let closingRange = comment.range(of: "*/") {
+                if let openingRange = commentLess.range(of: "/**") {
+                    if let closingRange = commentLess.range(of: "*/") {
                         commentLess.removeSubrange(openingRange.lowerBound ..< closingRange.upperBound)
                     } else {
                         commentLess.removeSubrange(openingRange.lowerBound...)
                         isInComment = true
                     }
                 }
-                let trimmed = commentLess.trimmingCharacters(in: .whitespaces)
+                var trimmed = commentLess.trimmingCharacters(in: .whitespaces)
                 guard trimmed.count > 0 else { return nextToken() }
                 
-                let regex = try! NSRegularExpression(pattern: "^")
-                let match = regex.firstMatch(in: trimmed, range: NSRange(location: 0, length: trimmed.count))
+                do {
+                    while let token = try trimmed.consumeToken() {
+                        tokens.append(token)
+                    }
+                } catch {
+                    Console.error(error.localizedDescription)
+                    exit(0)
+                }
                 
-                return .keyword(.´class´)  // TODO: delete when complete
+                if tokens.count > 0 {
+                    return tokens.remove(at: 0)
+                } else {
+                    return nextToken()
+                }
             } else {
+                closeFile()
                 return nil
             }
         }
+    }
+    
+    func closeFile() {
+        inputFile.closeFile()
     }
     
 }
@@ -90,11 +103,54 @@ extension String {
     
     mutating func consumeToken() throws -> Token? {
         self = self.trimmingCharacters(in: .whitespacesAndNewlines)
-        return try consumeKeyword() ??
-            consumeSymbol() ??
-            consumeIdentifier() ??
+        guard count > 0 else { return nil }
+        return try consumeSymbol() ??
+            consumeStringConstant() ??
             consumeIntegerConstant() ??
-            consumeStringConstant()
+            consumeKeyword() ??
+            consumeIdentifier()
+    }
+    
+    
+    
+    mutating func consumeSymbol() throws -> Token? {
+        let regex = try NSRegularExpression(pattern: "^\\{|\\}|\\(|\\)|\\[|]|\\.|,|;|\\+|-|\\*|\\/|&|\\||<|>|=|~")
+        let match = regex.firstMatch(in: self, range: NSRange(location: 0, length: 1))
+        if let nsRange = match?.range, let range = Range(nsRange, in: self) {
+            if let token = Token.Symbol(rawValue: String(self[range])) {
+                removeSubrange(range)
+                return .symbol(token)
+            }
+        }
+        return nil
+    }
+    
+    mutating func consumeStringConstant() throws -> Token? {
+        let regex = try NSRegularExpression(pattern: "^\"([^\"]*)\"")
+        let match = regex.firstMatch(in: self, range: NSRange(location: 0, length: count))
+        if let nsRange = match?.range(at: 1),
+            let range = Range(nsRange, in: self),
+            let nsWholeRange = match?.range,
+            let wholeRange = Range(nsWholeRange, in: self) {
+            let constant = String(self[range])
+            removeSubrange(wholeRange)
+            return .stringConstant(constant)
+        }
+        return nil
+    }
+    
+    mutating func consumeIntegerConstant() throws -> Token? {
+        let regex = try NSRegularExpression(pattern: "^\\d+")
+        let match = regex.firstMatch(in: self, range: NSRange(location: 0, length: count))
+        if let nsRange = match?.range, let range = Range(nsRange, in: self) {
+            guard let constant = Int(self[range]) else {
+                removeSubrange(range)
+                return nil
+            }
+            removeSubrange(range)
+            return .integerConstant(constant)
+        }
+        return nil
     }
     
     mutating func consumeKeyword() throws -> Token? {
@@ -109,19 +165,15 @@ extension String {
         return nil
     }
     
-    mutating func consumeSymbol() -> Token? {
-        
+    mutating func consumeIdentifier() throws -> Token? {
+        let regex = try NSRegularExpression(pattern: "^[a-zA-Z_][a-zA-Z_0-9]*")
+        let match = regex.firstMatch(in: self, range: NSRange(location: 0, length: count))
+        if let nsRange = match?.range, let range = Range(nsRange, in: self) {
+            let identifier = String(self[range])
+            removeSubrange(range)
+            return .identifier(identifier)
+        }
+        return nil
     }
-    
-    mutating func consumeIdentifier() -> Token? {
-        
-    }
-    
-    mutating func consumeIntegerConstant() -> Token? {
-        
-    }
-    
-    mutating func consumeStringConstant() -> Token? {
-        
-    }
+
 }
