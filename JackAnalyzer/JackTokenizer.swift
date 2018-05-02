@@ -99,6 +99,25 @@ enum Token {
     case stringConstant(String)
 }
 
+extension Token: Equatable {
+    public static func ==(lhs: Token, rhs: Token) -> Bool {
+        switch (lhs, rhs) {
+        case let (.keyword(leftKeyword), .keyword(rightKeyword)):
+            return leftKeyword == rightKeyword
+        case let (.symbol(leftSymbol), .symbol(rightSymbol)):
+            return leftSymbol == rightSymbol
+        case let (.identifier(leftIdentifier), .identifier(rightIdentifier)):
+            return leftIdentifier == rightIdentifier
+        case let (.integerConstant(leftInt), .integerConstant(rightInt)):
+            return leftInt == rightInt
+        case let (.stringConstant(leftString), .stringConstant(rightString)):
+            return leftString == rightString
+        default:
+            return false
+        }
+    }
+}
+
 extension String {
     
     mutating func consumeToken() throws -> Token? {

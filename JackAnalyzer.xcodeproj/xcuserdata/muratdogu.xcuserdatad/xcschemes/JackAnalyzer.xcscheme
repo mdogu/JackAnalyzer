@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/Users/muratdogu/Desktop/nand2tetris/projects/10/Square"
+            argument = "/Users/muratdogu/Desktop/nand2tetris/projects/10/ArrayTest"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

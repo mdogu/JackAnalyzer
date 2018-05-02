@@ -7,3 +7,24 @@
 //
 
 import Foundation
+
+class CompilationEngine {
+    
+    struct CompilationError: Error {
+        let message: String
+    }
+    
+    let tokenizer: JackTokenizer
+    let writer: XMLWriter
+    
+    init(tokenizer: JackTokenizer, writer: XMLWriter) {
+        self.tokenizer = tokenizer
+        self.writer = writer
+    }
+    
+    
+    func compileClass() throws {
+
+    }
+    
+}

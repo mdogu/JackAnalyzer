@@ -60,6 +60,8 @@ if FileManager.default.fileExists(atPath: outputFolder.path) == false {
     }
 }
 
+// MARK: Tokenizer Test
+/*
 do {
     for inputFile in inputFiles {
         let tokenizer = try JackTokenizer(inputFileURL: inputFile)
@@ -71,6 +73,22 @@ do {
                 xmlWriter.write(token: token)
             }
         }
+        xmlWriter.closeFile()
+    }
+} catch {
+    Console.error(error.localizedDescription)
+    exit(0)
+}
+*/
+// MARK: Compilation Engine Test
+
+do {
+    for inputFile in inputFiles{
+        let tokenizer = try JackTokenizer(inputFileURL: inputFile)
+        let outputFileName = inputFile.lastPathComponent.replacingOccurrences(of: ".jack", with: ".xml")
+        let outputFile = outputFolder.appendingPathComponent(outputFileName)
+        let xmlWriter = try XMLWriter(outputFileURL: outputFile)
+        
         xmlWriter.closeFile()
     }
 } catch {

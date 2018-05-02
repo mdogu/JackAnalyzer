@@ -11,6 +11,10 @@ import Foundation
 class XMLWriter {
     
     let outputFile: FileHandle
+    var indentationLevel: Int = 0
+    var padding: String {
+        return String(repeating: " ", count: indentationLevel)
+    }
     
     init(outputFileURL: URL) throws {
         if FileManager.default.fileExists(atPath: outputFileURL.path) == false {
@@ -20,9 +24,11 @@ class XMLWriter {
     }
     
     func write(element: String, body: ()-> ()) {
-        outputFile.write(line: "<\(element)>")
+        outputFile.write(line: padding + "<\(element)>")
+        indentationLevel += 2
         body()
-        outputFile.write(line: "</\(element)>")
+        indentationLevel -= 2
+        outputFile.write(line: padding + "</\(element)>")
     }
     
     func write(token: Token) {
@@ -50,7 +56,7 @@ class XMLWriter {
         case let .stringConstant(stringConstant):
             output = "<stringConstant> \(stringConstant) </stringConstant>"
         }
-        outputFile.write(line: output)
+        outputFile.write(line: padding + output)
     }
     
     func closeFile() {
