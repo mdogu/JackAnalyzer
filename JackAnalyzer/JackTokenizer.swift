@@ -97,6 +97,10 @@ enum Token {
     case identifier(String)
     case integerConstant(Int)
     case stringConstant(String)
+    
+    static var identifierType: Token { return Token.identifier("") }
+    static var integerConstantType: Token { return Token.integerConstant(0) }
+    static var stringConstantType: Token { return Token.stringConstant("") }
 }
 
 extension Token: Equatable {

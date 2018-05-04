@@ -23,10 +23,10 @@ class XMLWriter {
         self.outputFile = try FileHandle(forUpdating: outputFileURL)
     }
     
-    func write(element: String, body: ()-> ()) {
+    func write(element: String, body: () throws -> ()) throws {
         outputFile.write(line: padding + "<\(element)>")
         indentationLevel += 2
-        body()
+        try body()
         indentationLevel -= 2
         outputFile.write(line: padding + "</\(element)>")
     }

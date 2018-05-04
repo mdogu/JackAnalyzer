@@ -88,8 +88,8 @@ do {
         let outputFileName = inputFile.lastPathComponent.replacingOccurrences(of: ".jack", with: ".xml")
         let outputFile = outputFolder.appendingPathComponent(outputFileName)
         let xmlWriter = try XMLWriter(outputFileURL: outputFile)
-        
-        xmlWriter.closeFile()
+        let compiler = CompilationEngine(tokenizer: tokenizer, writer: xmlWriter)
+        try compiler.compile()
     }
 } catch {
     Console.error(error.localizedDescription)
